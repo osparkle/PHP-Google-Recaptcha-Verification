@@ -1,3 +1,5 @@
+<!-- How to Implement Google Invisible reCAPTCHA in PHP -->
+
 <!-- Prepared by Simeon Adedokun <femsimade@gmail.com> -->
 
 <!-- 
@@ -7,31 +9,36 @@
 <!-- 
 READ THE FOLLOWING BEFORE THE FORM
 
-In the v3 Admin Console,
+Steps to Follow:
 
-1. To create Recaptcha for a website, visit the following URL: https://www.google.com/recaptcha/admin. Click/touch the + sign at the top-right side to create reCaptcha for a new site,
+1. Visit reCaptcha v3 Admin Console page at https://www.google.com/recaptcha/admin and log in with your Google Account
 
-2. Give the recaptcha a label (maybe name of the website or any name to ID it), 
+2. Click/touch the + sign at the top-right side to create reCaptcha for a new site
 
-3. Select reCAPTCHA v2, then Invisible reCAPTCHA badge, under Type, 
+3. Give the recaptcha a label (maybe name of the website or any name to ID it), 
 
-4. Add the domain name(s) you want to use the reCAPTCHA (one per line), e.g. simdols.com, orgds.org. Note that all sub-domains running independently must be added. You can add localhost as a domain if you're testing on a localhost, but remember to remove it when the website is in production stage.
+4. Select reCAPTCHA v2, then Invisible reCAPTCHA badge, under Type, 
 
-5. You can add multiple owners if the reCAPTCHA will be managed by multiple persons
+5. Add the domain name(s) you want to use the reCAPTCHA (one per line), e.g. example.com, domainname.org. Note that all sub-domains running independently must be added. You can add localhost as a domain if you're testing on a localhost, but remember to remove it when the website is in production stage.
 
-6. Accept ToS
+6. You can add multiple owners if the reCAPTCHA will be managed by multiple persons
 
-7. Submit
+7. Read and accept the Terms of Service
+
+8. Submit
 
 
 * After a successful submission, your keys will appear. 
 
-* If you're retuning to the reCAPTCHA Admin Consoe, locate your newly added reCaptcha/website at the top of the page. Click on/touch Settings/Cog icon to see your reCaptcha Keys that will be used on the website. The SITE KEY is used at the front end (in a form). while the SECRET KEY is used at the back end for validation.
+* If you're retuning to the reCAPTCHA Admin Console, locate your newly added reCaptcha/website at the top of the page.
+  Click on/touch Settings/Cog icon to see your reCaptcha Keys that will be used on the website. The SITE KEY is used at the front end (in a form), while the SECRET KEY is used at the back end for validation.
 
 -->
 
 <?php
 // Create variables for reCAPTCHA keys
+
+// Note that the following keys were created for testing purpose on localhost only. You must create your own keys following the above steps.
 
 # public/front-end key. Change the key to yours
 define('your_site_key', '6LcTVd0cAAAAAI5J3iVNCTsHYwN1ZUkWDlwYTyVe');
@@ -40,14 +47,14 @@ define('your_site_key', '6LcTVd0cAAAAAI5J3iVNCTsHYwN1ZUkWDlwYTyVe');
 define('your_site_secret_key', '6LcTVd0cAAAAAMZXjzvYmrFnDFEr8dMU8CfZEDJ-');
 
 /*
-	Here is my verifyRecaptcha function that will verify the user, using the SECRET_KEY
+	Here is my verifyRecaptcha function that will verify the user with your SECRET_KEY
 	
-	You copy the function to your code for use
+	You can copy the function to your code for use
 */
 function verifyRecaptcha($response = ""){
    	// reCaptcha verification function
    	// Author: Simeon Adedokun <femsimade@gmail.com>
-  	$secret = your_site_secret_key;// defined on line 40
+  	$secret = your_site_secret_key;// defined on line 47
   	$remoteip = $_SERVER["REMOTE_ADDR"];
   	$url = "https://www.google.com/recaptcha/api/siteverify";
    	$post_data = array(
@@ -142,7 +149,7 @@ function verifyRecaptcha($response = ""){
     	<p>
     		<!-- This is the aspect where the reCAPTCHA SITE KEY is implemented -->
 
-    		<!-- This page will show "ERROR for site owner: Invalid site key" until you add a valid SITE KEY to replace your_site_key where the variable was difined on line 37 -->
+    		<!-- This page will show "ERROR for site owner: Invalid site key" until you add a valid SITE KEY to replace your_site_key where the variable was difined on line 44 -->
 			<button class="g-recaptcha" data-sitekey="<?= your_site_key ?>" data-callback='onSubmit'>Register</button>
 		</p>
       <br/>
